@@ -4,10 +4,15 @@ const uuID = require('node-uuid');
 const _ = require('lodash');
 let rooms = require('./data/rooms');
 
-
-router.get('/', (req, res) => {
-    res.render('index', {title: "Home"});
+//check if user is and admin and can access the chat rooms and edit them
+router.use((req, res, next) => {
+    if(req.user.admin){
+        next();
+        return;
+    }
+    res.redirect('/login')
 });
+
 
 router.get('/rooms', (req, res) => {
     res.render('rooms', {
